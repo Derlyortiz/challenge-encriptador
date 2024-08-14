@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptador</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="Logo.png" alt="Descripción de la imagen">
+        <h1>Encriptador "Alura Latam - Oracle"</h1>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Texto</h2>
+            <textarea id="inputText" placeholder="Introduce el texto aquí..." onkeydown="handleEnter(event)"></textarea>
+            <button onclick="encrypt()">Cifrar</button>
+            <button onclick="decrypt()">Descifrar</button>
+            <p id="warning">No se aceptarán mayúsculas ni caracteres especiales.</p>
+        </section>
+
+        <section id="resultSection">
+            <h2>Resultado</h2>
+            <textarea id="resultText" readonly></textarea>
+            <button id="copyButton" onclick="copyText()">Copiar</button>
+            <button id="clearButton" onclick="clearText()">Borrar</button>
+        </section>
+    </main>
+    
+    <footer>
+        <p>No se aceptaran mayúsculas ni caracteres especiales.</p>
+    </footer>
+
+    <script>
+        function showWarning() {
+            document.getElementById('warning').style.display = 'block';
+        }
+
+        function hideWarning() {
+            document.getElementById('warning').style.display = 'none';
+        }
+
+        function isValidInput(text) {
+            const regex = /^[a-z\s]+$/;
+            return regex.test(text);
+        }
+
+        function encrypt() {
+            const inputText = document.getElementById('inputText').value;
+            if (!isValidInput(inputText)) {
+                showWarning();
+                return;
+            }
+            hideWarning();
+            const encryptedText = inputText
+                .replace(/e/g, "enter")
+                .replace(/i/g, "imes")
+                .replace(/a/g, "ai")
+                .replace(/o/g, "ober")
+                .replace(/u/g, "ufat");
+            document.getElementById('resultText').value = encryptedText;
+            document.getElementById('resultSection').style.display = 'block';
+        }
+
+        function decrypt() {
+            const inputText = document.getElementById('inputText').value;
+            if (!isValidInput(inputText)) {
+                showWarning();
+                return;
+            }
+            hideWarning();
+            const decryptedText = inputText
+                .replace(/enter/g, "e")
+                .replace(/imes/g, "i")
+                .replace(/ai/g, "a")
+                .replace(/ober/g, "o")
+                .replace(/ufat/g, "u");
+            document.getElementById('resultText').value = decryptedText;
+            document.getElementById('resultSection').style.display = 'block';
+        }
+
+        function copyText() {
+            const resultText = document.getElementById('resultText');
+            resultText.select();
+            resultText.setSelectionRange(0, 99999); // For mobile devices
+
+            navigator.clipboard.writeText(resultText.value).then(() => {
+                alert("Texto copiado al portapapeles");
+            }).catch(err => {
+                console.error("Error al copiar el texto: ", err);
+            });
+        }
+
+        function clearText() {
+            document.getElementById('resultText').value = ""; // Limpia el contenido del textarea
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Evitar que se inserte un salto de línea en el textarea
+                encrypt(); // Llamar a la función de cifrado
+            }
+        }
+    </script>
+    <footer class="footer">
+        <p>"Desarrollado por: Derly Ortiz Ubiera"</p>
+    </footer>
+</body>
+</html>
